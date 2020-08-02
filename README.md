@@ -1,16 +1,19 @@
 # Covid_SA
- This repo is ETL script to load data from this repo https://github.com/AlrasheedA/saudi_covid19 to a local PostgreSQL database
+
+ This repo is ETL script to load data from this repo https://github.com/AlrasheedA/saudi_covid19 to a local PostgreSQL database. The data are Covid cases and tests in Saudi Arabia. I am only focusing on two tables, cases and tests.
  
- ## Requriments:
- *  PostgreSQL database
- *  Python 3.* 
- *  psycopg2 libirary
- *  pandas libarary
+ ## Requirements:
+ * PostgreSQL database
+ * Python 3.* 
+ * psycopg2 library
+ * pandas library
  
  ## How to run 
- *  Run create_tables.py to create tables in the database
- *  Run ETL.py to load the data into database
+ * Fill config.cfg file with database information
+ * Run create_tables.py to create tables in the database (for first run only)
+ * Run ETL.py to load the data into database
  
- ## Futrure work
- *  Using cloud database (For example, AWS Redshift)
- *  Do some analysis and dashboards 
+ ## Future work
+ * Using cloud database (For example, AWS Redshift)
+ * Do some analysis and dashboards 
+ * Automate the ETL using Airflow or other ETL orchestration 

@@ -4,24 +4,12 @@ import psycopg2
 import pandas as pd
 import io
 import configparser
+from sql_queries import insert_cases_query, insert_tests_query
 
 #link to the data source
 cases_url = "https://raw.githubusercontent.com/AlrasheedA/saudi_covid19/master/data/saudi_covid19_places.csv"
 tests_url = "https://raw.githubusercontent.com/AlrasheedA/saudi_covid19/master/data/saudi_covid19_tests.csv"
 
-#Insert query to cases table
-cases_query = """
-INSERT INTO cases 
-VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-;
-"""
-
-#Insert query to tests table
-tests_query = """
-INSERT INTO tests 
-VALUES (%s, %s, %s)
-;
-"""
 
 #Importing database information from config file
 config = configparser.ConfigParser()
@@ -137,8 +125,8 @@ def etl(table,url,query):
 
 
 # Running ETL for each table by providing the table name, source data url and insert query
-etl("cases",cases_url,cases_query)
-etl("tests",tests_url,tests_query)
+etl("cases",cases_url,insert_cases_query)
+etl("tests",tests_url,insert_tests_query)
 
 #Closing the connection 
 conn.close()
