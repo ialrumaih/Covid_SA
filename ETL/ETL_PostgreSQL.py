@@ -28,7 +28,7 @@ def current_rows(table):
     This funcation return the number of records in the destination table before the ETL
 
     Function Parameters:
-    table(string): the name of the table that we want to check
+    table: the name of the table that we want to check
 
     Return: number of rows in the destination table
     '''
@@ -42,7 +42,7 @@ def trancate_tables(table):
     This function is to truncate the table in the destination before loading the data from source
 
     Function Parameters:
-    table(string): the name of the table that we want to truncate
+    table: the name of the table that we want to truncate
     '''
     try: 
         cur.execute('truncate table {}'.format(table))
@@ -54,13 +54,14 @@ def trancate_tables(table):
 
 def load_data(url,query):
     '''
-    This function is to load the data from source into pandas dataframe. Then, convert the datetime to date type and load it into the database
+    This function is to load the data from source into pandas dataframe. Then, convert the datetime to date type and load it into the database and return 
+    the number of records in the dataset source
 
     Function Parameters:
-    url(string): The URL for the source data
-    query(string): The insert query 
+    url: The URL for the source data
+    query: The insert query 
 
-    Return: the number of inserted rows
+    Return: the number of records in the dataset source
     '''
     #Loading data into dataframe
     new_df = pd.read_csv(url)
@@ -81,8 +82,9 @@ def quality_check(table,source_rows,new_source_records):
     This function to check wheather the number of records in the destination are matching the number of records in the source
 
     Function Parameters:
-    table(string): the name of the table that we want to check
-    source_rows(int): the returned value from current_rows funcation
+    table: the name of the table that we want to check
+    source_rows: number of records in the destination after loading new data
+    new_source_records: the number of records in the source dataset
     '''
     #Getting number of rows in destination table and source table
     count_rows = pd.read_sql("Select count(*) from {}".format(table), conn)
@@ -115,9 +117,9 @@ def etl(table,url,query):
     This function is to run the ETL for specific data
 
     Function Parameters:
-    table(string): the name of the table that we want to ETL the data to
-    url(string): The URL for the source data
-    query(string): The insert query
+    table: the name of the table that we want to ETL the data to
+    url: The URL for the source data
+    query: The insert query
     '''
     current_number_rows = current_rows(table)
     trancate_tables(table)
