@@ -11,7 +11,7 @@
  ## How to run 
  * Fill config.cfg file with database information
  * Run create_tables.py to create tables in the database (for first run only)
- * Run ETL.py to load the data into database
+ * Run ETL_PostgreSQL.py to load the data into PostgreSQL database
  
  ## Future work
  * Using cloud database (For example, AWS Redshift)
