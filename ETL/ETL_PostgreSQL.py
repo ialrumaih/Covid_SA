@@ -17,7 +17,7 @@ config.read('ETL/config.cfg')
 
 # Connecting to the database
 try: 
-    conn = psycopg2.connect("host=127.0.0.1 dbname={} user={} password={}".format(*config['DB'].values()))
+    conn = psycopg2.connect("host={} dbname={} user={} password={}".format(*config['DB'].values()))
     cur = conn.cursor() 
 except psycopg2.Error as e: 
     print("Error: Could not make connection to the Postgres database")
@@ -67,6 +67,7 @@ def load_data(url,query):
 
     #Changing DateTime column type to date
     new_df['DateTime'] =  pd.to_datetime(new_df['DateTime'])
+    
 
     #Inserting into cases table
     for i, row in new_df.iterrows():
@@ -75,7 +76,7 @@ def load_data(url,query):
     return(len(new_df))
 
 
-def quality_check(table,source_rows):
+def quality_check(table,source_rows,new_source_records):
     '''
     This function to check wheather the number of records in the destination are matching the number of records in the source
 
@@ -96,7 +97,7 @@ def quality_check(table,source_rows):
 
     else:
         # Check if the number of records in destination is the same as the source
-        if row_num == source_rows:
+        if row_num == new_source_records:
             print("Number of records are match, ETL succeed!")
             print("{} Records have been inserted into table {}".format(row_num,table))
             print("{} new records".format(inserted_rows))
@@ -120,8 +121,8 @@ def etl(table,url,query):
     '''
     current_number_rows = current_rows(table)
     trancate_tables(table)
-    load_data(url,query)
-    quality_check(table,current_number_rows)
+    new_source_records = load_data(url,query)
+    quality_check(table,current_number_rows,new_source_records)
 
 
 # Running ETL for each table by providing the table name, source data url and insert query
